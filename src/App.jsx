@@ -1,18 +1,56 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+import data from './rankings';
+import Initialize from './components/Initialize/Initialize';
+
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isInitialized: false
+    };
+
+    this.onStart = this.onStart.bind(this);
+  }
+
+  onStart(teams, ownerIndex) {
+    this.setState({
+      isInitialized: true,
+      teams,
+      ownerIndex
+    });
+  }
+
   render() {
+    const renderDraft = () => {
+      const players = data.players.map(player => {
+        return (
+        <li key={player.name}>
+          {player.name}
+        </li>
+        );
+      });
+
+      return (
+        <ul>{players}</ul>
+      );
+    };
+
+    const renderInitialize = () => (<div><Initialize onStart={this.onStart}/></div>);
+
+    const content = this.state.isInitialized
+      ? renderDraft()
+      : renderInitialize();
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <div className="app">
+        <header>
+          <h1>Draft Dodger</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <ul>
+          {content}
+        </ul>
       </div>
     );
   }
