@@ -23,7 +23,7 @@ class Initialize extends Component {
 	handleAddClick(event) {
 		this.setState(prevState => {
 			const newTeam = {
-				id: prevState.teams.length,
+				id: prevState.teams.length + 1,
 				name: this.state.name,
 				isOwned: false
 			}

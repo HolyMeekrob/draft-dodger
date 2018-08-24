@@ -8,14 +8,16 @@ class Draft extends Component {
 		super(props);
 
 		this.state = {
-			round: 1,
-			nextPick: 0
+			round: 1
 		};
 	}
 
 	render() {
 		return (
 			<div id="draft">
+				<h3>
+					Next pick: {this.props.teams.find(team => team.id === this.props.nextPick).name}
+				</h3>
 				<Teams teams={this.props.teams} />
 				<Players players={this.props.players} />
 			</div>

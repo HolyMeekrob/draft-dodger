@@ -8,7 +8,7 @@ class Teams extends Component {
 				: <React.Fragment>{team.name}</React.Fragment>;
 
 			return (
-				<div className="team" key={team.key}>{name}</div>
+				<div className="team" key={team.id}>{name}</div>
 			);
 		});
 

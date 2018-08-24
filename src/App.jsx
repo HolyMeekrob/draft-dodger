@@ -19,7 +19,8 @@ class App extends Component {
   onStart(teams) {
     this.setState({
       isInitialized: true,
-      teams
+      teams,
+      nextPick: 1
     });
   }
 
@@ -27,7 +28,7 @@ class App extends Component {
     const renderDraft = () => {
       return (
         <React.Fragment>
-          <Draft teams={this.state.teams} players={data.players} />
+          <Draft teams={this.state.teams} players={data.players} nextPick={this.state.nextPick} />
         </React.Fragment>
       );
     };
