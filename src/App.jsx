@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import data from './rankings';
+import Draft from './components/Draft/Draft';
 import Initialize from './components/Initialize/Initialize';
 
 import './App.css';
@@ -15,26 +16,19 @@ class App extends Component {
     this.onStart = this.onStart.bind(this);
   }
 
-  onStart(teams, ownerIndex) {
+  onStart(teams) {
     this.setState({
       isInitialized: true,
-      teams,
-      ownerIndex
+      teams
     });
   }
 
   render() {
     const renderDraft = () => {
-      const players = data.players.map(player => {
-        return (
-        <li key={player.name}>
-          {player.name}
-        </li>
-        );
-      });
-
       return (
-        <ul>{players}</ul>
+        <React.Fragment>
+          <Draft teams={this.state.teams} players={data.players} />
+        </React.Fragment>
       );
     };
 
