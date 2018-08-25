@@ -21,16 +21,21 @@ class Players extends Component {
 				.filter(bye => bye !== ''))
 			.sort(intSort);
 
+		const allDraftStatuses = ['Drafted', 'Undrafted'];
+
 		this.state = {
 			positions: allPositions,
 			positionFilters: allPositions,
 			byes: allByes,
 			byeFilters: allByes,
+			draftStatuses: allDraftStatuses,
+			draftStatusFilters: allDraftStatuses,
 			searchText: ''
 		};
 
 		this.handlePositionFilterChange = this.handlePositionFilterChange.bind(this);
 		this.handleByeFilterChange = this.handleByeFilterChange.bind(this);
+		this.handleDraftStatusFilterChange = this.handleDraftStatusFilterChange.bind(this);
 		this.handleSearchChange = this.handleSearchChange.bind(this);
 		this.handleClearSearch = this.handleClearSearch.bind(this);
 		this.handleDraftClick = this.handleDraftClick.bind(this);
@@ -45,6 +50,12 @@ class Players extends Component {
 	handleByeFilterChange(filters) {
 		this.setState({
 			byeFilters: filters
+		});
+	}
+
+	handleDraftStatusFilterChange(filters) {
+		this.setState({
+			draftStatusFilters: filters
 		});
 	}
 
@@ -69,18 +80,24 @@ class Players extends Component {
 		const {
 			byeFilters,
 			byes,
+			draftStatuses,
+			draftStatusFilters,
 			positionFilters,
 			positions,
 			searchText
 		} = this.state;
 
 		const visiblePlayers = players.filter(player => {
+			const isDrafted = player.teamId !== undefined;
 			const showPosition = positionFilters.includes(player.position);
 			const showBye = byeFilters.includes(player.bye);
+			const showDraftStatus = (draftStatusFilters.includes('Drafted') && isDrafted)
+				|| (draftStatusFilters.includes('Undrafted') && !isDrafted);
+
 			const searchHit = searchText.length === 0
 				|| player.name.toLowerCase().includes(searchText.toLowerCase())
 
-			return showPosition && showBye && searchHit;
+			return showPosition && showBye && searchHit && showDraftStatus;
 		});
 
 		const playerList = visiblePlayers.map((player) => {
@@ -123,12 +140,21 @@ class Players extends Component {
 							onChange={this.handlePositionFilterChange} />
 					</div>
 					<div>
-					<label htmlFor="bye-filter">Bye: </label>
+						<label htmlFor="bye-filter">Bye: </label>
 						<Filter
 							id="bye-filter"
 							filters={byes}
 							activeFilters={byeFilters}
 							onChange={this.handleByeFilterChange}
+						/>
+					</div>
+					<div>
+						<label htmlFor="draft-filter">Draft Status:</label>
+						<Filter
+							id="draft-filter"
+							filters={draftStatuses}
+							activeFilters={draftStatusFilters}
+							onChange={this.handleDraftStatusFilterChange}
 						/>
 					</div>
 				</div>
