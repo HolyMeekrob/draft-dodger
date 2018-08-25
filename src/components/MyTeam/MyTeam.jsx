@@ -8,7 +8,7 @@ const MyTeam = (props) => {
 	const players = team.players.map(player => {
 		return (
 			<div className="player" key={player.id}>
-				<div>{player.name}</div>
+				<div>({player.id}) {player.name}</div>
 				<div>{player.position}</div>
 				<div>{player.team}</div>
 				<div>{player.bye}</div>

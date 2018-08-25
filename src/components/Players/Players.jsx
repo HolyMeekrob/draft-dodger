@@ -114,7 +114,7 @@ class Players extends Component {
 
 			return (
 				<div className={className} key={player.id} data-player-id={player.id}>
-					<div>{player.name}</div>
+					<div>({player.id}) {player.name}</div>
 					<div>{player.position}</div>
 					<div>{player.team}</div>
 					<div>{player.bye}</div>
