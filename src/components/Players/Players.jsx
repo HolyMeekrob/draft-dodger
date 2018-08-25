@@ -72,7 +72,10 @@ class Players extends Component {
 
 			return (
 				<div className={className} key={player.id} data-player-id={player.id}>
-					{player.name}
+					<div>{player.name}</div>
+					<div>{player.position}</div>
+					<div>{player.team}</div>
+					<div>{player.bye}</div>
 					{draftInput}
 					</div>
 			);
@@ -100,7 +103,15 @@ class Players extends Component {
 						/>
 					</div>
 				</div>
-				{players}
+				<div className="player-list">
+					<div className = "player-headers">
+						<div>Name</div>
+						<div>Pos</div>
+						<div>Team</div>
+						<div>Bye</div>
+					</div>
+					{players}
+				</div>
 			</div>
 		);
 	}

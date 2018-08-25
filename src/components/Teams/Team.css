@@ -1,0 +1,16 @@
+.roster {
+	display: table;
+}
+
+.roster > .player {
+	display: table-row;
+}
+
+.roster-headers {
+	display: table-header-group;
+}
+
+.roster > .player > div, .roster-headers > div {
+	display: table-cell;
+	padding-right: 1em;
+}
