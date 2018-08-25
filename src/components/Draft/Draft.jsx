@@ -25,6 +25,8 @@ const Draft = (props) => {
 			<Guide
 				players={players.filter(player => player.teamId === undefined)}
 				team={ownedTeam}
+				ownerCanDraft={nextPick === ownedTeam.id}
+				onDraft={onDraft}
 			/>
 			<MyTeam team={ownedTeam} />
 			<Teams teams={teamData} />

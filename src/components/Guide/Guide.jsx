@@ -29,6 +29,7 @@ class Guide extends React.Component {
 		this.handleMaxPerTeamChange = this.handleMaxPerTeamChange.bind(this);
 		this.handleMaxPerPositionChange = this.handleMaxPerPositionChange.bind(this);
 		this.handlePositionFilterChange = this.handlePositionFilterChange.bind(this);
+		this.handleDraftRecommended = this.handleDraftRecommended.bind(this);
 	}
 
 	updateRecommendedPick() {
@@ -138,7 +139,12 @@ class Guide extends React.Component {
 		});
 	}
 
+	handleDraftRecommended() {
+		this.props.onDraft(this.state.recommendedPick.id);
+	}
+
 	render() {
+		const { ownerCanDraft } = this.props;
 		const {
 			maxPerBye,
 			maxPerPosition,
@@ -176,6 +182,12 @@ class Guide extends React.Component {
 			? 'None available'
 			: recommendedPick.name
 
+		const action = recommendedPick === undefined || !ownerCanDraft
+			? null
+			: <button type="button" onClick={this.handleDraftRecommended}>
+					Draft
+				</button>;
+
 		return (
 			<div className="guide">
 				<h2>Draft recommendation</h2>
@@ -210,7 +222,7 @@ class Guide extends React.Component {
 				</div>
 				<div className="recommended-pick">
 					<h5>
-						Recommended pick: {recommendation}
+						Recommended pick: {recommendation} {action}
 					</h5>
 				</div>
 			</div>
