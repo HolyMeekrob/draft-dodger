@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Guide from '../Guide/Guide';
 import MyTeam from '../MyTeam/MyTeam';
 import Players from '../Players/Players';
 import Teams from '../Teams/Teams';
@@ -14,12 +15,18 @@ const Draft = (props) => {
 		};
 	});
 
+	const ownedTeam = teamData.find(team => team.isOwned);
+
 	return (
 		<div id="draft">
 			<h3>
 				Next pick: {teams.find(team => team.id === nextPick).name}
 			</h3>
-			<MyTeam team={teamData.find(team => team.isOwned)} />
+			<Guide
+				players={players.filter(player => player.teamId === undefined)}
+				team={ownedTeam}
+			/>
+			<MyTeam team={ownedTeam} />
 			<Teams teams={teamData} />
 			<Players players={players} onDraft={onDraft} />
 		</div>

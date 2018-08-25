@@ -73,9 +73,9 @@ class App extends Component {
 				<header>
 					<h1>Draft Dodger</h1>
 				</header>
-				<ul>
+				<div>
 					{content}
-				</ul>
+				</div>
 			</div>
 		);
 	}
