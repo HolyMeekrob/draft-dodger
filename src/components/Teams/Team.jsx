@@ -17,7 +17,7 @@ const Team = (props) => {
 
 	return (
 		<div className="team">
-			<h4>{team.name}</h4>
+			<h2>{team.name}</h2>
 			<div className="roster">
 				<div className="roster-headers">
 					<div>Name</div>

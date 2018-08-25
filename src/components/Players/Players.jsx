@@ -25,11 +25,14 @@ class Players extends Component {
 			positions: allPositions,
 			positionFilters: allPositions,
 			byes: allByes,
-			byeFilters: allByes
+			byeFilters: allByes,
+			searchText: ''
 		};
 
 		this.handlePositionFilterChange = this.handlePositionFilterChange.bind(this);
 		this.handleByeFilterChange = this.handleByeFilterChange.bind(this);
+		this.handleSearchChange = this.handleSearchChange.bind(this);
+		this.handleClearSearch = this.handleClearSearch.bind(this);
 		this.handleDraftClick = this.handleDraftClick.bind(this);
 	}
 
@@ -45,20 +48,42 @@ class Players extends Component {
 		});
 	}
 
+	handleSearchChange(event) {
+		this.setState({
+			searchText: event.target.value
+		});
+	}
+
+	handleClearSearch() {
+		this.setState({
+			searchText: ''
+		});
+	}
+
 	handleDraftClick(event) {
 		this.props.onDraft(event.target.parentNode.dataset.playerId);
 	}
 
 	render() {
-		const visiblePlayers = this.props.players.filter(player => {
-			const showPosition =
-				this.state.positionFilters.includes(player.position);
-			const showBye = this.state.byeFilters.includes(player.bye);
+		const { players } = this.props;
+		const {
+			byeFilters,
+			byes,
+			positionFilters,
+			positions,
+			searchText
+		} = this.state;
 
-			return showPosition && showBye;
+		const visiblePlayers = players.filter(player => {
+			const showPosition = positionFilters.includes(player.position);
+			const showBye = byeFilters.includes(player.bye);
+			const searchHit = searchText.length === 0
+				|| player.name.toLowerCase().includes(searchText.toLowerCase())
+
+			return showPosition && showBye && searchHit;
 		});
 
-		const players = visiblePlayers.map((player) => {
+		const playerList = visiblePlayers.map((player) => {
 			const isDrafted = player.teamId !== undefined;
 
 			const className = isDrafted ? 'player drafted' : 'player';
@@ -81,6 +106,10 @@ class Players extends Component {
 			);
 		});
 
+		const clearSearch = searchText.length === 0
+			? null
+			: <button type="button" onClick={this.handleClearSearch}>Clear</button>
+
 		return (
 			<div id="players">
 				<h2>Available Players</h2>
@@ -89,19 +118,25 @@ class Players extends Component {
 						<label htmlFor="position-filter">Position: </label>
 						<Filter
 							id="position-filter"
-							filters={this.state.positions}
-							activeFilters={this.state.positionFilters}
+							filters={positions}
+							activeFilters={positionFilters}
 							onChange={this.handlePositionFilterChange} />
 					</div>
 					<div>
 					<label htmlFor="bye-filter">Bye: </label>
 						<Filter
 							id="bye-filter"
-							filters={this.state.byes}
-							activeFilters={this.state.byeFilters}
+							filters={byes}
+							activeFilters={byeFilters}
 							onChange={this.handleByeFilterChange}
 						/>
 					</div>
+				</div>
+				<div>
+					<label>
+						<input type="text" onChange={this.handleSearchChange} />
+						Search {clearSearch}
+					</label>
 				</div>
 				<div className="player-list">
 					<div className = "player-headers">
@@ -110,7 +145,7 @@ class Players extends Component {
 						<div>Team</div>
 						<div>Bye</div>
 					</div>
-					{players}
+					{playerList}
 				</div>
 			</div>
 		);

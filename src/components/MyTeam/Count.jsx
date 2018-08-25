@@ -17,7 +17,7 @@ const Count = (props) => {
 		const countObj = playerCount(key);
 		return Object.keys(countObj).map(countKey => {
 			return (
-				<div>{prefix === undefined ? '' : `${prefix} `}{countKey}: {countObj[countKey]}</div>
+				<div key={countKey}>{prefix === undefined ? '' : `${prefix} `}{countKey}: {countObj[countKey]}</div>
 			);
 		});
 	};
