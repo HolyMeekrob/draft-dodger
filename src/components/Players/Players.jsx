@@ -10,10 +10,10 @@ class Players extends Component {
 			positionFilter: 'ALL'
 		};
 
-		this.handlePositionFilterClick = this.handlePositionFilterClick.bind(this);
+		this.handlePositionFilterChange = this.handlePositionFilterChange.bind(this);
 	}
 
-	handlePositionFilterClick(event) {
+	handlePositionFilterChange(event) {
 		this.setState({
 			positionFilter: event.target.value
 		});
@@ -30,23 +30,22 @@ class Players extends Component {
 		});
 
 		const positions = this.state.positions.map(position => (
-				<label>
-					<input
-						type="radio"
-						name="position-filter"
-						value={position}
-						checked={this.state.positionFilter === position}
-						onClick={this.handlePositionFilterClick}
-					/>
-						{position}
-				</label>
+				<option
+					key={position}
+					value={position}
+					checked={this.state.positionFilter === position}>
+					{position}
+				</option>
 			));
 
 		return (
 			<div id="players">
 				<h2>Available Players</h2>
 				<div id="player-filters">
-					<div className="filters">{positions}</div>
+					<label htmlFor="position-filter">Position: </label>
+					<select id="position-filter" className="filters" onChange={this.handlePositionFilterChange}>
+						{positions}
+					</select>
 				</div>
 				{players}
 			</div>
