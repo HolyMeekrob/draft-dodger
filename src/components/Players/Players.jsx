@@ -8,19 +8,40 @@ class Players extends Component {
 	constructor(props) {
 		super(props);
 
+		const getUniques = arr => Array.from(new Set(arr));
+		const intSort = (a, b) => a - b;
+
+		const allPositions = getUniques(
+			props.players.map(player => player.position))
+			.sort();
+
+		const allByes = getUniques(
+			props.players
+				.map(player => player.bye)
+				.filter(bye => bye !== ''))
+			.sort(intSort);
+
 		this.state = {
-			positions: Array.from(new Set(
-				props.players.map(player => player.position))),
-			positionFilter: 'All'
+			positions: allPositions,
+			positionFilters: allPositions,
+			byes: allByes,
+			byeFilters: allByes
 		};
 
 		this.handlePositionFilterChange = this.handlePositionFilterChange.bind(this);
+		this.handleByeFilterChange = this.handleByeFilterChange.bind(this);
 		this.handleDraftClick = this.handleDraftClick.bind(this);
 	}
 
-	handlePositionFilterChange(event) {
+	handlePositionFilterChange(filters) {
 		this.setState({
-			positionFilter: event.target.value
+			positionFilters: filters
+		});
+	}
+
+	handleByeFilterChange(filters) {
+		this.setState({
+			byeFilters: filters
 		});
 	}
 
@@ -29,8 +50,13 @@ class Players extends Component {
 	}
 
 	render() {
-		const visiblePlayers = this.props.players.filter(player =>
-			this.state.positionFilter === 'All' || player.position === this.state.positionFilter);
+		const visiblePlayers = this.props.players.filter(player => {
+			const showPosition =
+				this.state.positionFilters.includes(player.position);
+			const showBye = this.state.byeFilters.includes(player.bye);
+
+			return showPosition && showBye;
+		});
 
 		const players = visiblePlayers.map((player) => {
 			const isDrafted = player.teamId !== undefined;
@@ -56,12 +82,23 @@ class Players extends Component {
 			<div id="players">
 				<h2>Available Players</h2>
 				<div id="player-filters">
-					<label htmlFor="position-filter">Position: </label>					
-					<Filter
-						id="position-filter"
-						filters={this.state.positions}
-						selectedFilter={this.state.positionFilter}
-						onChange={this.handlePositionFilterChange} />
+					<div>
+						<label htmlFor="position-filter">Position: </label>
+						<Filter
+							id="position-filter"
+							filters={this.state.positions}
+							activeFilters={this.state.positionFilters}
+							onChange={this.handlePositionFilterChange} />
+					</div>
+					<div>
+					<label htmlFor="bye-filter">Bye: </label>
+						<Filter
+							id="bye-filter"
+							filters={this.state.byes}
+							activeFilters={this.state.byeFilters}
+							onChange={this.handleByeFilterChange}
+						/>
+					</div>
 				</div>
 				{players}
 			</div>
