@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Count from './Count';
+
 class MyTeam extends Component {
 	constructor(props) {
 		super(props);
@@ -22,40 +24,12 @@ class MyTeam extends Component {
 				</div>);
 		});
 
-		const playerCount = (key) => team.players.reduce((map, player) => {
-			const val = player[key];
-			if (map[val] === undefined) {
-				map[val] = 0;
-			}
-
-			map[val] = map[val] + 1;
-			return map;
-		}, {});
-
-		const countDisplay = (key) => {
-			const countObj = playerCount(key);
-			return Object.keys(countObj).map(countKey => {
-				return (
-					<div>{countKey}: {countObj[countKey]}</div>
-				);
-			});
-		};
-
 		return (
 			<div id="my-team">
 				<h2>My Team - {team.name}</h2>
-				<div>
-					By position:
-					{countDisplay('position')}
-				</div>
-				<div>
-					By bye:
-					{countDisplay('bye')}
-				</div>
-				<div>
-					By team:
-					{countDisplay('team')}
-				</div>
+				<Count players={team.players} objKey="position" />
+				<Count players={team.players} objKey="bye" prefix="Week" />
+				<Count players={team.players} objKey="team" />
 				<div className="roster">
 					{players}
 				</div>
