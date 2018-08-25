@@ -134,7 +134,7 @@ class Players extends Component {
 				</div>
 				<div>
 					<label>
-						<input type="text" onChange={this.handleSearchChange} />
+						<input type="text" value={searchText} onChange={this.handleSearchChange} />
 						Search {clearSearch}
 					</label>
 				</div>
