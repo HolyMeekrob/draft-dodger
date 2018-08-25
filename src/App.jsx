@@ -10,25 +10,55 @@ class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			isInitialized: false
+			isInitialized: false,
+			players: data.players
 		};
 
 		this.onStart = this.onStart.bind(this);
+		this.onDraft = this.onDraft.bind(this);
 	}
 
 	onStart(teams) {
 		this.setState({
 			isInitialized: true,
 			teams,
-			nextPick: 1
+			pick: 1,
+			round: 1
 		});
+	}
+
+	onDraft(playerId) {
+		const { pick, round, teams } = this.state;
+
+		const isEvenRound = round % 2 === 0;
+		const wrapStart = (pick === 1) && isEvenRound;
+		const wrapEnd = (pick === teams.length) && !isEvenRound;
+
+		const nextPick = wrapStart || wrapEnd
+			? pick
+			: (isEvenRound ? pick - 1 : pick + 1);
+
+		this.setState(prevState => ({
+			...prevState,
+			pick: nextPick,
+			round: (wrapStart || wrapEnd) ? round + 1 : round,
+			players: prevState.players.map(player =>
+				player.id === playerId
+					? {...player, teamId: pick }
+					: player)
+		}));
 	}
 
 	render() {
 		const renderDraft = () => {
 			return (
 				<React.Fragment>
-					<Draft teams={this.state.teams} players={data.players} nextPick={this.state.nextPick} />
+					<Draft
+						teams={this.state.teams}
+						players={this.state.players}
+						nextPick={this.state.pick}
+						onDraft={this.onDraft}
+						/>
 				</React.Fragment>
 			);
 		};
