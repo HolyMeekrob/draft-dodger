@@ -16,7 +16,8 @@ class Guide extends React.Component {
 			teams,
 			positions,
 			recommendedPick: props.players[0],
-			maxPerTeam: 100,
+			positionFilter: '',
+			maxPerTeam: -1,
 			maxPerBye: 3,
 			maxPerPosition: positions.reduce((obj, position) => {
 				obj[position] = 3;
@@ -27,6 +28,7 @@ class Guide extends React.Component {
 		this.handleMaxPerByeChange = this.handleMaxPerByeChange.bind(this);
 		this.handleMaxPerTeamChange = this.handleMaxPerTeamChange.bind(this);
 		this.handleMaxPerPositionChange = this.handleMaxPerPositionChange.bind(this);
+		this.handlePositionFilterChange = this.handlePositionFilterChange.bind(this);
 	}
 
 	updateRecommendedPick() {
@@ -36,6 +38,7 @@ class Guide extends React.Component {
 			maxPerBye,
 			maxPerPosition,
 			maxPerTeam,
+			positionFilter,
 			positions,
 			teams
 		} = this.state;
@@ -55,7 +58,8 @@ class Guide extends React.Component {
 		const getFilteredValues = (key, vals, getMax) => {
 			const counts = getCounts(key, vals);
 			return Object.keys(counts)
-				.filter(countKey => counts[countKey] >= getMax(countKey));
+				.filter(countKey =>
+					getMax(countKey) !== -1 && counts[countKey] >= getMax(countKey));
 		};
 
 		const filteredByes = getFilteredValues('bye', byes, () => maxPerBye);
@@ -63,7 +67,11 @@ class Guide extends React.Component {
 		const filteredPositions = getFilteredValues(
 			'position', positions,(position) => maxPerPosition[position]);
 
-		const recommendedPick = players
+		const source = positionFilter === ''
+			? players
+			: players.filter(player => player.position === positionFilter);
+
+		const recommendedPick = source
 			.filter(player =>
 				!filteredByes.includes(player.bye)
 				&& !filteredTeams.includes(player.team)
@@ -78,6 +86,7 @@ class Guide extends React.Component {
 			maxPerBye,
 			maxPerTeam,
 			maxPerPosition,
+			positionFilter,
 			positions
 		} = this.state;
 
@@ -86,7 +95,8 @@ class Guide extends React.Component {
 			prevState.maxPerPosition[position] !== maxPerPosition[position];
 
 		const settingsChanged =
-			(prevState.maxPerTeam !== maxPerTeam)
+			(prevState.positionFilter !== positionFilter)
+			|| (prevState.maxPerTeam !== maxPerTeam)
 			|| (prevState.maxPerBye !== maxPerBye)
 			|| (positions.filter(positionSettingChanged).length > 0);
 
@@ -97,13 +107,13 @@ class Guide extends React.Component {
 
 	handleMaxPerByeChange(event) {
 		this.setState({
-			maxPerBye: event.target.value
+			maxPerBye: parseInt(event.target.value, 10)
 		});
 	}
 	
 	handleMaxPerTeamChange(event) {
 		this.setState({
-			maxPerTeam: event.target.value
+			maxPerTeam: parseInt(event.target.value, 10)
 		});
 	}
 
@@ -122,6 +132,12 @@ class Guide extends React.Component {
 		});
 	}
 
+	handlePositionFilterChange(event) {
+		this.setState({
+			positionFilter: event.target.value
+		});
+	}
+
 	render() {
 		const {
 			maxPerBye,
@@ -137,7 +153,7 @@ class Guide extends React.Component {
 					<label>
 						<input
 							type="number"
-							min="0"
+							min="-1"
 							data-position={position}
 							value={maxPerPosition[position]}
 							onChange={this.handleMaxPerPositionChange}
@@ -148,18 +164,27 @@ class Guide extends React.Component {
 			);
 		});
 
+		const positionFilters = [(
+			<option value="" key="ALL">ALL</option>
+		)].concat(
+				positions.map(position => (
+					<option key={position} value={position}>{position}</option>
+				))
+		);
+
 		const recommendation = recommendedPick === undefined
 			? 'None available'
 			: recommendedPick.name
 
 		return (
 			<div className="guide">
-				<h5>Max values</h5>
+				<h2>Draft recommendation</h2>
+				<h5>Max values (-1 for none)</h5>
 				<div>
 					<label>
 						<input
 							type="number"
-							min="0"
+							min="-1"
 							value={maxPerBye}
 							onChange={this.handleMaxPerByeChange}
 						/>
@@ -170,7 +195,7 @@ class Guide extends React.Component {
 					<label>
 						<input
 							type="number"
-							min="0"
+							min="-1"
 							value={maxPerTeam}
 							onChange={this.handleMaxPerTeamChange}
 						/>
@@ -178,6 +203,11 @@ class Guide extends React.Component {
 					</label>
 				</div>
 				{positionMaxes}
+				<div>
+					<select onChange={this.handlePositionFilterChange}>
+						{positionFilters}
+					</select>
+				</div>
 				<div className="recommended-pick">
 					<h5>
 						Recommended pick: {recommendation}
