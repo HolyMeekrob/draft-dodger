@@ -73,6 +73,7 @@ class Players extends Component {
 
 	handleDraftClick(event) {
 		this.props.onDraft(event.target.parentNode.dataset.playerId);
+		this.handleClearSearch();
 	}
 
 	render() {
