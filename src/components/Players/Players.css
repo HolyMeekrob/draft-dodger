@@ -1,3 +1,7 @@
+#players {
+	grid-area: players;
+}
+
 .drafted {
 	color: lightgray;
 }

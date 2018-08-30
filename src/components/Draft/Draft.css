@@ -1,0 +1,8 @@
+.draft-container {
+	display: grid;
+	grid-template-columns: 50% auto;
+	grid-template-rows: 25% auto;
+	grid-template-areas:
+		"my-team recommendation"
+		"teams players";
+}

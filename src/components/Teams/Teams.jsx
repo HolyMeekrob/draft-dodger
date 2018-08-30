@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Team from './Team';
 import TeamList from './TeamList';
 
+import './Teams.css';
+
 class Teams extends Component {
 	constructor(props) {
 		super(props);
@@ -32,9 +34,9 @@ class Teams extends Component {
 					/>
 
 		return (
-		<React.Fragment>
+		<div id="teams">
 			{content}
-		</React.Fragment>
+		</div>
 		);
 	}
 }

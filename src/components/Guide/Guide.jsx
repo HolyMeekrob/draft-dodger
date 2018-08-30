@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+
+import './Guide.css';
 
 class Guide extends React.Component {
 	constructor(props) {

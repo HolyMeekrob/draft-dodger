@@ -2,6 +2,8 @@ import React from 'react';
 
 import Count from './Count';
 
+import './MyTeam.css';
+
 const MyTeam = (props) => {
 	const { team } = props;
 

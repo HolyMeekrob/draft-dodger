@@ -18,6 +18,9 @@ const Team = (props) => {
 	return (
 		<div className="team">
 			<h2>{team.name}</h2>
+			<div>
+				<button type="button" onClick={onGoBack}>Back</button>
+			</div>
 			<div className="roster">
 				<div className="roster-headers">
 					<div>Name</div>
@@ -26,9 +29,6 @@ const Team = (props) => {
 					<div>Bye</div>
 				</div>
 				{players}
-			</div>
-			<div>
-				<button type="button" onClick={onGoBack}>Back</button>
 			</div>
 		</div>
 	);

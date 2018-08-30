@@ -5,6 +5,8 @@ import MyTeam from '../MyTeam/MyTeam';
 import Players from '../Players/Players';
 import Teams from '../Teams/Teams';
 
+import './Draft.css';
+
 const Draft = (props) => {
 	const { nextPick, onDraft, players, teams } = props;
 
@@ -22,15 +24,17 @@ const Draft = (props) => {
 			<h3>
 				Next pick: {teams.find(team => team.id === nextPick).name}
 			</h3>
-			<Guide
-				players={players.filter(player => player.teamId === undefined)}
-				team={ownedTeam}
-				ownerCanDraft={nextPick === ownedTeam.id}
-				onDraft={onDraft}
-			/>
-			<MyTeam team={ownedTeam} />
-			<Teams teams={teamData} />
-			<Players players={players} onDraft={onDraft} />
+			<div className="draft-container">
+				<Guide
+					players={players.filter(player => player.teamId === undefined)}
+					team={ownedTeam}
+					ownerCanDraft={nextPick === ownedTeam.id}
+					onDraft={onDraft}
+				/>
+				<MyTeam team={ownedTeam} />
+				<Teams teams={teamData} />
+				<Players players={players} onDraft={onDraft} />
+			</div>
 		</div>
 	);
 };
