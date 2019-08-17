@@ -36,7 +36,7 @@ const Filter = (props) => {
 					checked={isActive(filter)}
 					onChange={handleFilterChange}
 				/>
-				{filter}
+				{parseInt(filter, 10) === 0 ? '-' : filter}
 			</label>
 		);
 	});

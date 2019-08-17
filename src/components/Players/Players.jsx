@@ -118,7 +118,7 @@ class Players extends Component {
 					<div>({player.id}) {player.name}</div>
 					<div>{player.position}</div>
 					<div>{player.team}</div>
-					<div>{player.bye}</div>
+					<div>{parseInt(player.bye, 10) === 0 ? '-' : player.bye}</div>
 					{draftInput}
 				</div>
 			);
