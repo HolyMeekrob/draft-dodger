@@ -120,7 +120,7 @@ class Players extends Component {
 					<div>{player.team}</div>
 					<div>{player.bye}</div>
 					{draftInput}
-					</div>
+				</div>
 			);
 		});
 
@@ -166,7 +166,7 @@ class Players extends Component {
 					</label>
 				</div>
 				<div className="player-list">
-					<div className = "player-headers">
+					<div className="player-headers">
 						<div>Name</div>
 						<div>Pos</div>
 						<div>Team</div>

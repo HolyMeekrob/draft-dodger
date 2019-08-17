@@ -11,7 +11,11 @@ class App extends Component {
 		super();
 		this.state = {
 			isInitialized: false,
-			players: data.players
+			players: data.players.map(player => ({
+				...player,
+				id: parseInt(player.id, 10),
+				bye: parseInt(player.bye, 10)
+			}))
 		};
 
 		this.onStart = this.onStart.bind(this);
@@ -43,8 +47,8 @@ class App extends Component {
 			pick: nextPick,
 			round: (wrapStart || wrapEnd) ? round + 1 : round,
 			players: prevState.players.map(player =>
-				player.id === playerId
-					? {...player, teamId: pick }
+				player.id === parseInt(playerId, 10)
+					? { ...player, teamId: pick }
 					: player)
 		}));
 	}
@@ -58,12 +62,12 @@ class App extends Component {
 						players={this.state.players}
 						nextPick={this.state.pick}
 						onDraft={this.onDraft}
-						/>
+					/>
 				</React.Fragment>
 			);
 		};
 
-		const renderInitialize = () => (<div><Initialize onStart={this.onStart}/></div>);
+		const renderInitialize = () => (<div><Initialize onStart={this.onStart} /></div>);
 
 		const content = this.state.isInitialized
 			? renderDraft()

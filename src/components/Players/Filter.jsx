@@ -1,13 +1,19 @@
 import React from 'react';
 
+const isNaturalNumber = (str) => (/^-?\d+$/).test(str);
+
 const Filter = (props) => {
 	const handleFilterChange = (event) => {
-		const newFilters = event.target.checked
-			? props.activeFilters.concat([event.target.value])
-			: props.activeFilters
-				.filter(filter => filter !== event.target.value);
+		const input = event.target.value;
+		const value = isNaturalNumber(input)
+			? parseInt(input, 10)
+			: input;
 
-		
+		const newFilters = event.target.checked
+			? props.activeFilters.concat([value])
+			: props.activeFilters.filter(filter => filter !== value);
+
+
 		props.onChange(newFilters);
 	};
 
@@ -15,11 +21,12 @@ const Filter = (props) => {
 		const activeFilters = event.target.checked
 			? props.filters
 			: [];
-		
+
 		props.onChange(activeFilters);
 	}
 
 	const isActive = (filter) => props.activeFilters.includes(filter);
+
 	const inputs = props.filters.map(filter => {
 		return (
 			<label key={filter}>
