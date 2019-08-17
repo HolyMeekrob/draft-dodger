@@ -19,7 +19,7 @@ class Initialize extends Component {
 	}
 
 	handleNameChange(event) {
-		this.setState({name: event.target.value});
+		this.setState({ name: event.target.value });
 	}
 
 	handleAddClick() {
@@ -123,11 +123,11 @@ class Initialize extends Component {
 		const teamList = teams.map(team => {
 			const moveUp = team.id === 1
 				? null
-				: <button type="button" onClick={this.handleMoveUpClick}>&#x2BC5;</button>;
+				: <button type="button" onClick={this.handleMoveUpClick}>&#8593;</button>;
 
 			const moveDown = team.id === teams.length
 				? null
-				: <button type="button" onClick={this.handleMoveDownClick}>&#x2BC6;</button>;
+				: <button type="button" onClick={this.handleMoveDownClick}>&#8595;</button>;
 
 			return (
 				<li key={team.id} data-team-id={team.id}>
