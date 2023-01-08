@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import data from './rankings';
+import data from './rankings2020';
 import Draft from './components/Draft/Draft';
 import Initialize from './components/Initialize/Initialize';
 
